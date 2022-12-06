@@ -19,7 +19,7 @@ const hasChildren = computed(() => {
 <template>
   <div>
     <div @click="expanded = !expanded" class="node" :style="{'margin-left': '${depth * 20}px'}">
-      <span class="type" v-if="hasChildren" >
+      <span class="type" v-if="hasChildren">
         {{ expanded ? '&#9660;' : '&#9658;' }}
       </span>
       <span v-else>
