@@ -3,6 +3,8 @@ import TreeBrowser from './TreeBrowser.vue'
 import { ref, computed } from 'vue'
 import { store } from '../main.js'
 
+
+
 const props = defineProps({
   node: Object,
   depth: {
@@ -10,28 +12,71 @@ const props = defineProps({
     default: 0
   }
 })
-
+const cost_workers = ref(0)
 const expanded = ref(false)
 const hasChildren = computed(() => {
   return props.node.children != 0 ? true : false
 })
 
 
-function addDeveloper(a) {
+function addDeveloper(actNode) {
+  // get actual node.
+  // console.log(store.tree.all())
+  var actualNode = store.tree.first(function (node) {
+    return node.model.id === actNode.id;
+  })
+  console.log(actualNode)
+  // create a new node.
+  store.id_count += 1
+  var newNode = store.new_tree.parse({ id: store.id_count, name: 'developer', cost: 1000, children: [] })
+  actualNode.addChild(newNode)
+  // Add Cost.
   store.count += 1000
-  a.children.push({ name: 'developer', children: [] })
+  // Update component with a child component.
+  actNode.children.push({ id: store.id_count, name: 'developer', cost: 1000, children: [] })
 }
-function addQAtester(a) {
-  store.count += 500
-  a.children.push({ name: 'QA tester', children: [] })
-}
-function addManager(a) {
-  store.count += 300
-  a.children.push({ name: 'manager', children: [] })
-}
-function deleteWorker(a) {
 
-  a.children = []
+function addQAtester(actNode) {
+  var actualNode = store.tree.first(function (node) {
+    return node.model.id === actNode.id;
+  })
+  console.log(actualNode)
+  // create a new node.
+  store.id_count += 1
+  var newNode = store.new_tree.parse({ id: store.id_count, name: 'qa tester', cost: 500, children: [] })
+  actualNode.addChild(newNode)
+  // Add Cost.
+  store.count += 500
+
+  actNode.children.push({ id: store.id_count, name: 'qa tester', cost: 500, children: [] })
+}
+function addManager(actNode) {
+  var actualNode = store.tree.first(function (node) {
+    return node.model.id === actNode.id;
+  })
+  console.log(actualNode)
+  // create a new node.
+  store.id_count += 1
+  var newNode = store.new_tree.parse({ id: store.id_count, name: 'manager', cost: 300, children: [] })
+  actualNode.addChild(newNode)
+  // Add Cost.
+  store.count += 300
+  actNode.children.push({ id: store.id_count, name: 'manager', cost: 300, children: [] })
+}
+function deleteWorker(actNode) {
+  var actualNode = store.tree.first(function (node) {
+    return node.model.id === actNode.id;
+  })
+  actualNode.drop()
+
+  console.log(store.tree.all())
+  var totalCost = store.tree.all().reduce((acc, item) => {
+    console.log(item.model.cost)
+    return acc = acc + item.model.cost
+  }, 0)
+  store.count = totalCost
+  actNode = ''
+  console.log(props.node)
 }
 
 </script>
