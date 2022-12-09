@@ -10,6 +10,7 @@ import { store } from '../main.js'
 
 <style scoped>
 .allocation {
-  padding-bottom: 20px;
+  padding-bottom: 100px;
+  font-size: 30px;
 }
 </style>

@@ -7,36 +7,18 @@ import { reactive } from "vue";
 import treemodel from "tree-model";
 
 const treeb = new treemodel();
+const treeOb = {
+  id: 1,
+  name: "Employees",
+  cost: 0,
+  children: [],
+};
 export const store = reactive({
-  id_count: 5,
-  count: 2100,
+  id_count: 1,
+  count: 0,
   new_tree: treeb,
-  tree: treeb.parse({
-    id: 1,
-    name: "manager",
-    cost: 300,
-    children: [
-      {
-        id : 2,
-        name: "manager",
-        cost: 300,
-        children: [
-          {
-            id : 3,
-            name: "developer",
-            cost: 1000,
-            children: [],
-          },
-          {
-            id : 4,
-            name: "qa tester",
-            cost: 500,
-            children: [],
-          },
-        ],
-      },
-    ],
-  }),
+  tree: treeb.parse(treeOb),
+  treeData: treeOb,
 });
 
 createApp(App).mount("#app");
