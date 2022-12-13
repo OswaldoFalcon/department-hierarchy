@@ -46,14 +46,12 @@ function addDeveloper(actNode) {
     return acc = acc + item.model.cost
   }, 0)
   costWorkerp.value = actualNodeCost
-  console.log(costWorkerp.value)
 }
 
 function addQAtester(actNode) {
   var actualNode = store.tree.first(function (node) {
     return node.model.id === actNode.id;
   })
-  console.log(actualNode)
   // create a new node.
   store.id_count += 1
   var newNode = store.new_tree.parse({ id: store.id_count, name: 'qa tester', cost: 500, children: [] })
@@ -65,14 +63,11 @@ function addQAtester(actNode) {
     return acc = acc + item.model.cost
   }, 0)
   costWorkerp.value = actualNodeCost
-  console.log(costWorkerp.value)
-
 }
 function addManager(actNode) {
   var actualNode = store.tree.first(function (node) {
     return node.model.id === actNode.id;
   })
-  console.log(actualNode)
   // create a new node.
   store.id_count += 1
   var newNode = store.new_tree.parse({ id: store.id_count, name: 'manager', cost: 300, children: [] })
@@ -84,8 +79,6 @@ function addManager(actNode) {
     return acc = acc + item.model.cost
   }, 0)
   costWorkerp.value = actualNodeCost
-  console.log(costWorkerp.value)
-
 }
 function deleteWorker(actNode) {
   var actualNode = store.tree.first(function (node) {
@@ -103,12 +96,8 @@ function deleteWorker(actNode) {
   var actualNodeCost = actualNode.all().reduce((acc, item) => {
     return acc = acc + item.model.cost
   }, 0)
-  console.log('resta para padre:')
-  console.log(costWorkerp.value)
   emit('response', costWorkerp.value)
   costWorkerp.value = actualNodeCost
-  // console.log(costWorkerp.value)
-
 }
 
 </script>
