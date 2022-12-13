@@ -1,13 +1,11 @@
 <script setup>
-import Deparments from './components/Departments.vue'
-import Title from './components/Title.vue'
+import DeparmentsItem from "./components/DepartmentsItem.vue";
+import TitleItem from "./components/TitleItem.vue";
 </script>
 
 <template>
-  <Title />
-  <Deparments />
+  <TitleItem />
+  <DeparmentsItem />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

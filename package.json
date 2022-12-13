@@ -8,7 +8,9 @@
     "build": "vite build",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
+    "format": "prettier .  --write"
   },
   "dependencies": {
     "@vue/test-utils": "^2.0.0-rc.18",
@@ -21,6 +23,10 @@
     "@vitejs/plugin-vue": "^3.2.0",
     "@vitest/coverage-c8": "^0.25.7",
     "@vitest/coverage-istanbul": "^0.25.8",
+    "eslint": "^8.29.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-vue": "^9.8.0",
+    "prettier": "2.8.1",
     "vite": "^3.2.3"
   }
 }

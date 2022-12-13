@@ -1,137 +1,169 @@
 <script setup>
-import TreeBrowser from './TreeBrowser.vue'
-import { ref, computed } from 'vue'
-import { store } from '../main.js'
+import TreeBrowser from "./TreeBrowser.vue";
+import { ref, computed } from "vue";
+import { store } from "../main.js";
 
-const emit = defineEmits(['response'])
-const costWorkerp = ref(300)
+const emit = defineEmits(["response"]);
+const costWorkerp = ref(300);
 const props = defineProps({
-  node: Object,
-  depth: {
-    type: Number,
-    default: 0
-  }
-})
+  node: {
+    type: Object,
+    default() {
+      return {
+        id: 1,
+        name: "Employees",
+        cost: 0,
+        children: [],
+      };
+    },
+    depth: {
+      type: Number,
+      default: 0,
+    },
+  },
+});
 
-const expanded = ref(false)
+const expanded = ref(false);
 const hasChildren = computed(() => {
-  return props.node.children != 0 ? true : false
-})
-
+  return props.node.children != 0 ? true : false;
+});
 
 function bus(actNode) {
   var actualNode = store.tree.first(function (node) {
     return node.model.id === actNode.id;
-  })
+  });
   var actualNodeCost = actualNode.all().reduce((acc, item) => {
-    return acc = acc + item.model.cost
-  }, 0)
-  costWorkerp.value = actualNodeCost
+    return (acc = acc + item.model.cost);
+  }, 0);
+  costWorkerp.value = actualNodeCost;
 }
-
 
 function addDeveloper(actNode) {
   // get actual node.
   var actualNode = store.tree.first(function (node) {
     return node.model.id === actNode.id;
-  })
+  });
   // create a new node.
-  store.id_count += 1
-  var newNode = store.new_tree.parse({ id: store.id_count, name: 'developer', cost: 1000, children: [] })
-  actualNode.addChild(newNode)
+  store.id_count += 1;
+  var newNode = store.new_tree.parse({
+    id: store.id_count,
+    name: "developer",
+    cost: 1000,
+    children: [],
+  });
+  actualNode.addChild(newNode);
   //update tree with cost
   //Add Cost.
-  store.count += 1000
+  store.count += 1000;
   var actualNodeCost = actualNode.all().reduce((acc, item) => {
-    return acc = acc + item.model.cost
-  }, 0)
-  costWorkerp.value = actualNodeCost
+    return (acc = acc + item.model.cost);
+  }, 0);
+  costWorkerp.value = actualNodeCost;
 }
 
 function addQAtester(actNode) {
   var actualNode = store.tree.first(function (node) {
     return node.model.id === actNode.id;
-  })
+  });
   // create a new node.
-  store.id_count += 1
-  var newNode = store.new_tree.parse({ id: store.id_count, name: 'qa tester', cost: 500, children: [] })
-  actualNode.addChild(newNode)
+  store.id_count += 1;
+  var newNode = store.new_tree.parse({
+    id: store.id_count,
+    name: "qa tester",
+    cost: 500,
+    children: [],
+  });
+  actualNode.addChild(newNode);
 
   // Add Cost.
-  store.count += 500
+  store.count += 500;
   var actualNodeCost = actualNode.all().reduce((acc, item) => {
-    return acc = acc + item.model.cost
-  }, 0)
-  costWorkerp.value = actualNodeCost
+    return (acc = acc + item.model.cost);
+  }, 0);
+  costWorkerp.value = actualNodeCost;
 }
 function addManager(actNode) {
   var actualNode = store.tree.first(function (node) {
     return node.model.id === actNode.id;
-  })
+  });
   // create a new node.
-  store.id_count += 1
-  var newNode = store.new_tree.parse({ id: store.id_count, name: 'manager', cost: 300, children: [] })
-  actualNode.addChild(newNode)
+  store.id_count += 1;
+  var newNode = store.new_tree.parse({
+    id: store.id_count,
+    name: "manager",
+    cost: 300,
+    children: [],
+  });
+  actualNode.addChild(newNode);
 
   // Add Cost.
-  store.count += 300
+  store.count += 300;
   var actualNodeCost = actualNode.all().reduce((acc, item) => {
-    return acc = acc + item.model.cost
-  }, 0)
-  costWorkerp.value = actualNodeCost
+    return (acc = acc + item.model.cost);
+  }, 0);
+  costWorkerp.value = actualNodeCost;
 }
 function deleteWorker(actNode) {
   var actualNode = store.tree.first(function (node) {
     return node.model.id === actNode.id;
-  })
-  actualNode.drop()
+  });
+  actualNode.drop();
 
   var totalCost = store.tree.all().reduce((acc, item) => {
-    console.log(item.model.cost)
-    return acc = acc + item.model.cost
-  }, 0)
+    console.log(item.model.cost);
+    return (acc = acc + item.model.cost);
+  }, 0);
 
   // Add Cost.
-  store.count = totalCost
+  store.count = totalCost;
   var actualNodeCost = actualNode.all().reduce((acc, item) => {
-    return acc = acc + item.model.cost
-  }, 0)
-  emit('response', costWorkerp.value)
-  costWorkerp.value = actualNodeCost
+    return (acc = acc + item.model.cost);
+  }, 0);
+  emit("response", costWorkerp.value);
+  costWorkerp.value = actualNodeCost;
 }
-
 </script>
 
 <template>
-
   <div class="container" :style="{ 'margin-left': `${depth * 50}px` }">
-    <div @click="expanded = !expanded" class="node">
+    <div class="node" @click="expanded = !expanded">
       <div class="expand">
-        <span class="type" v-if="hasChildren">
-          {{ expanded ? '&#9660;' : '&#9658;' }}
+        <span v-if="hasChildren" class="type">
+          {{ expanded ? "&#9660;" : "&#9658;" }}
         </span>
-        <span v-else>
-          &#9671
-        </span>
+        <span v-else> ∅ </span>
       </div>
       <div class="node-info">
         <b>{{ node.name }}</b>
-        <p v-if="node.name === 'manager'"> <b>Cost: ${{ costWorkerp }} </b></p>
+        <p v-if="node.name === 'manager'">
+          <b>Cost: ${{ costWorkerp }} </b>
+        </p>
       </div>
     </div>
-    <div class="control" v-if="node.name === 'Employees'">
-      <button @click="addManager(node)" class="add-worker"> + manager</button>
+    <div v-if="node.name === 'Employees'" class="control">
+      <button class="add-worker" @click="addManager(node)">+ manager</button>
     </div>
-    <div class="control" v-if="node.name === 'manager'">
-      <button @click="addDeveloper(node)" class="add-worker"> + developer </button>
-      <button @click="addQAtester(node)" class="add-worker"> + QA tester </button>
-      <button @click="addManager(node)" class="add-worker"> + manager</button>
+    <div v-if="node.name === 'manager'" class="control">
+      <button class="add-worker" @click="addDeveloper(node)">
+        + developer
+      </button>
+      <button class="add-worker" @click="addQAtester(node)">+ QA tester</button>
+      <button class="add-worker" @click="addManager(node)">+ manager</button>
     </div>
-    <div v-if="node.name != 'Employees'"><button @click="deleteWorker(node)" class="delete"> ⁃ </button></div>
+    <div v-if="node.name != 'Employees'">
+      <button class="delete" @click="deleteWorker(node)">⁃</button>
+    </div>
     <!-- Concurrent Component -->
   </div>
-  <TreeBrowser v-if="expanded" v-for="child in node.children" :key="child.name" :node="child" :depth="depth + 1"
-    @response="(msg) => costWorkerp = msg" :bus="bus(node)" />
+  <TreeBrowser
+    v-for="child in node.children"
+    v-if="expanded"
+    :key="child.name"
+    :node="child"
+    :depth="depth + 1"
+    :bus="bus(node)"
+    @response="(msg) => (costWorkerp = msg)"
+  />
 </template>
 
 <style scoped>
@@ -147,7 +179,6 @@ function deleteWorker(actNode) {
   max-width: 300px;
   color: azure;
   margin-bottom: 20px;
-
 }
 
 .node {
@@ -172,7 +203,7 @@ function deleteWorker(actNode) {
   max-height: 30px;
   font-size: 10px;
   margin: 5px;
-  background-color: #FFD99F;
+  background-color: #ffd99f;
 }
 
 .class {
@@ -184,7 +215,6 @@ span {
   justify-content: center;
   align-items: center;
   padding-right: 30px;
-
 }
 
 .expand {
