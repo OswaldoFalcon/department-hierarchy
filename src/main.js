@@ -1,7 +1,7 @@
 /** @format */
 
 import { createApp } from "vue";
-import "./style.css";
+import "./assets/style.css";
 import App from "./App.vue";
 import { reactive } from "vue";
 import treemodel from "tree-model";
